@@ -4,15 +4,24 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../src/genetico.c \
 ../src/main.c \
+../src/mem_structs.c \
+../src/problema.c \
 ../src/rand.c 
 
 OBJS += \
+./src/genetico.o \
 ./src/main.o \
+./src/mem_structs.o \
+./src/problema.o \
 ./src/rand.o 
 
 C_DEPS += \
+./src/genetico.d \
 ./src/main.d \
+./src/mem_structs.d \
+./src/problema.d \
 ./src/rand.d 
 
 
