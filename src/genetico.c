@@ -202,6 +202,3 @@ void Ordenar(POBLACION *T){
 		}
 	}
 }
-
-
-

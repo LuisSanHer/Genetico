@@ -28,6 +28,8 @@
 
 int main(int argc, char *argv[]){
 
+	srand(time(NULL));
+
 	POBLACION P,Q,T;
 	size_t i=0, mejor_p, peor_q;
 	FILE* file;
@@ -50,7 +52,8 @@ int main(int argc, char *argv[]){
 	alloc_pop(&Q, ga.psize);
 	alloc_pop(&T, ga.psize*2);
 
-	randomize(0.5);
+	int semilla = rand()%10; //Aleatorio entre 0 y 10
+	randomize(semilla/10);
 
 	Inicializar(&P);
 	Evaluacion(&P);
