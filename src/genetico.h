@@ -23,7 +23,6 @@ int Peor_solucion(POBLACION *P);
 void estadisticas(POBLACION *P, size_t i, FILE* file);
 void Unir_poblaciones(POBLACION *P, POBLACION *Q, POBLACION *T);
 void Seleccionar_mejores(POBLACION *T, POBLACION *P);
-void qs(POBLACION *T,int limite_izq,int limite_der);
 void Ordenar(POBLACION *T);
 
 #endif /* GENETICO_H */
