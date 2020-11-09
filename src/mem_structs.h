@@ -19,17 +19,21 @@ typedef struct{
 	INDIVIDUO *ind; //Arreglo de individuos
 }POBLACION;
 
-struct{
+typedef struct{
 	int nbin;	//Tamaño candena binaria (Genotipo)
 	int nobj;	//Número de objetivos.
-}mop;
+}MOP;
 
-struct{
+typedef struct{
 	int psize;	//Tamaño de la población
 	int Gmax;	//Máximo de generaciones
 	double Pc;	//Probabilidad de cruza
 	double Pm;	//Probabilidad de mutación
-}ga;
+}GA;
+
+extern int n;
+extern GA ga;
+extern MOP mop;
 
 void alloc_pop(POBLACION *P, int psize);
 void free_pop(POBLACION *P);

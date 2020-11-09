@@ -7,22 +7,22 @@ C_SRCS += \
 ../src/genetico.c \
 ../src/main.c \
 ../src/mem_structs.c \
-../src/problema.c \
-../src/rand.c 
+../src/rand.c \
+../src/transformada.c 
 
 OBJS += \
 ./src/genetico.o \
 ./src/main.o \
 ./src/mem_structs.o \
-./src/problema.o \
-./src/rand.o 
+./src/rand.o \
+./src/transformada.o 
 
 C_DEPS += \
 ./src/genetico.d \
 ./src/main.d \
 ./src/mem_structs.d \
-./src/problema.d \
-./src/rand.d 
+./src/rand.d \
+./src/transformada.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

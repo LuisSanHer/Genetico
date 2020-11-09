@@ -48,7 +48,7 @@ void Evaluacion(POBLACION *Q){
 	size_t i;
 	int n = Q->size;
 	for(i=0 ; i<n ; i++){ //Para todos los individuos
-		funcion(&Q->ind[i]); //Calcular la distancia de hamming
+		funcion(&Q->ind[i]); //Calcular la transformada de hadamard
 	}
 }
 
@@ -67,9 +67,9 @@ void Crossover(POBLACION *P, POBLACION *Q, double Pc){
 	//Primer Torneo binario
 	j = 0;
 	for(i=0 ; i<n ; i=i+2){
-		if( P->ind[A[i]].f < P->ind[A[i+1]].f){	//Se evalúa cual es mejor
-			p[j] = A[i];						//en términos de
-		}else{									//minimización.
+		if( P->ind[A[i]].f < P->ind[A[i+1]].f){ //Se evalúa cual es
+			p[j] = A[i];												  //mejor en terminos
+		}else{																	//de minimización
 			p[j] = A[i+1];
 		}
 		j++;
@@ -77,9 +77,9 @@ void Crossover(POBLACION *P, POBLACION *Q, double Pc){
 	shuffle(A, n); //Individuos de P ordenados aleatoriamente
 	//Segundo Torneo binario
 	for(i=0 ; i<n ; i=i+2){
-		if( P->ind[A[i]].f < P->ind[A[i+1]].f){ //Se evalúa cual es mejor
-			p[j] = A[i];						//en términos de
-		}else{									//minimización.
+		if( P->ind[A[i]].f < P->ind[A[i+1]].f){ //Se evalúa cual es
+			p[j] = A[i];												  //mejor en terminos
+		}else{																	//de minimización
 			p[j] = A[i+1];
 		}
 		j++;
@@ -140,9 +140,9 @@ int Mejor_solucion(POBLACION *P){
 	INDIVIDUO mejor = P->ind[0];
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
-		if( mejor.f >= P->ind[i].f ){
-			mejor = P->ind[i];
-			index = i;
+		if( mejor.f >= P->ind[i].f ){	// Evaluacion en términos de min
+			mejor = P->ind[i];          // o max. Cambiar condición
+			index = i;                  // dependiendo el caso
 		}
 	}
 	return index;
@@ -153,9 +153,9 @@ int Peor_solucion(POBLACION *P){
 	INDIVIDUO peor = P->ind[0];
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
-		if( peor.f <= P->ind[i].f ){
-			peor = P->ind[i];
-			index = i;
+		if( peor.f <= P->ind[i].f ){	// Evaluacion en términos de
+			peor = P->ind[i];         // minimización
+			index = i;                //
 		}
 	}
 	return index;
@@ -194,9 +194,9 @@ void Ordenar(POBLACION *T){
 	INDIVIDUO aux;
 	for(i = 1; i < T->size; i++) {
 		for(j = 0; j < (T->size - i); j++){
-			if(T->ind[j].f > T->ind[j+1].f ){
-			   aux = T->ind[j];
-			   cpy_ind(&T->ind[j], &T->ind[j+1]);
+			if(T->ind[j].f > T->ind[j+1].f ){ 		// Ordenamiento en terminos
+			   aux = T->ind[j];										// de min o max. Cambiar condicion
+			   cpy_ind(&T->ind[j], &T->ind[j+1]);	// dependiendo el caso.
 			   cpy_ind(&T->ind[j+1], &aux);
 		   }
 		}
