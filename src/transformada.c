@@ -44,11 +44,11 @@ void funcion(INDIVIDUO *p){
     }
   }
   //CLARK 2005: ECUACION 6
-  //int temp = -mayor;
+  int temp = -mayor;
   //p->f = - ((pow(2, n) - temp)/2.0); //No linealidad completa R= 192
   //p->f = - ((pow(2, n) - mayor)/2.0); //No linealidad completa R= 120
-  //p->f = - pow(2, n-1) - temp; //No linealidad completa sin dividir max R= 112
-  p->f = -mayor/2.0; //Mayor valor absoluto/2.0 R= 64
+  p->f = - pow(2, n-1) - temp; //No linealidad completa sin dividir max R= 112
+  //p->f = -mayor/2.0; //Mayor valor absoluto/2.0 R= 64
 
   free(aux);
 }

@@ -133,8 +133,11 @@ void Display_ind(INDIVIDUO ind){
 	}
 	mop.nbin >= 121?printf("\n"):printf("\n\n");
 
+	/*
+	 **
+	 ***
+	//Transformada rapida de Walsh Hadamard
 	int *aux = (int*)malloc(sizeof(int)*mop.nbin);
-  //Transformada rapida de Walsh Hadamard
 	int x,y,h=1;
 	memcpy(aux, ind.x,sizeof(int)*mop.nbin);
   while(h < mop.nbin){
@@ -154,6 +157,10 @@ void Display_ind(INDIVIDUO ind){
     printf("%d ", aux[i]);
   }
   printf("]\n");
+
+	***
+	**
+	*/
 
 }
 
