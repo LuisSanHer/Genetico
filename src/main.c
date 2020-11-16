@@ -35,8 +35,8 @@ int main(int argc, char *argv[]){
 
 	POBLACION P,Q,T;
 	size_t i=0, mejor_p, peor_q;
-	int alg, longitud, poblacion, gmax;
-	char algoritmo, r, p[10], max[10];
+	int alg, longitud, poblacion, gmax, semilla;
+	char algoritmo[10], r[10], p[10], max[10], sem[10];
 	FILE* file;
 
 	printf("\t1.- Genetico simple\n");
@@ -44,8 +44,8 @@ int main(int argc, char *argv[]){
 	printf("\t3.- Genetico Mu + Lambda\n");
 	do {
 		printf("Elige el algoritmo a ejecutar (1,2,3): ");
-		scanf("%c%*c", &algoritmo);
-		alg = atoi(&algoritmo);
+		scanf("%s", algoritmo);
+		alg = atoi(algoritmo);
 		//printf("%d\n", alg);
 		if (alg<1 || alg>3)
 			printf("\tOpción invalida\n");
@@ -53,13 +53,13 @@ int main(int argc, char *argv[]){
 
 
 	do {
-		printf("Ingrese exponente (4,6,8) para la longitud de la cadena binaria (genotipo): ");
-		scanf("%c%*c", &r);
-		longitud = atoi(&r);
+		printf("Ingrese exponente (4,6,8,10,12) para la longitud de la cadena binaria (genotipo): ");
+		scanf("%s", r);
+		longitud = atoi(r);
 		//printf("%d\n", longitud);
-		if (longitud!=4 && longitud!=6 && longitud!=8)
+		if (longitud!=4 && longitud!=6 && longitud!=8 && longitud!=10 && longitud!=12)
 			printf("\tOpción invalida\n");
-	} while(longitud!=4 && longitud!=6 && longitud!=8);
+	} while(longitud!=4 && longitud!=6 && longitud!=8 && longitud!=10 && longitud!=12);
 
 
 	do {
@@ -81,6 +81,14 @@ int main(int argc, char *argv[]){
 			printf("\tIngrese un número \n");
 	} while(gmax == 0);
 
+	do {
+		printf("\nIngrese el una semilla(1-10): ");
+		scanf("%s", sem);
+		semilla = atoi(sem);
+		//printf("%d\n", semilla);
+		if ( semilla<1 || semilla>10 )
+			printf("\tOpción invalida\n");
+	} while( semilla<1 || semilla>10 );
 
 	n = longitud;
 	mop.nbin = pow(2, n);
@@ -95,7 +103,7 @@ int main(int argc, char *argv[]){
 	alloc_pop(&Q, ga.psize);
 	alloc_pop(&T, ga.psize*2);
 
-	randomize(0.5);
+	randomize(1.0/semilla);
 
 	Inicializar(&P);
 	Evaluacion(&P);
@@ -105,12 +113,12 @@ int main(int argc, char *argv[]){
 			file = fopen("simple.txt", "w");
 			printf("\n\t\t\t \033[1;42m Genetico Simple \033[0m \n\n");
 				for(i=0 ; i<ga.Gmax ; i++){
-					fprintf(file,"%zu\t", i);
-					estadisticas(&P, i, file);
 					Crossover(&P,&Q, ga.Pc);
 					Mutacion(&Q, ga.Pm);
 					Evaluacion(&Q);
 					cpy_pop(&P, &Q);
+					fprintf(file,"%zu\t", i);
+					estadisticas(&P, i, file);
 				}
 				fclose(file);
 				printf("\n\t\t\t \033[1;42m Genetico Simple terminado \033[0m \n\n");
@@ -119,8 +127,6 @@ int main(int argc, char *argv[]){
 			file = fopen("elitismo.txt", "w");
 			printf("\n\t\t\t \033[1;42m Genetico con elitismo \033[0m \n\n");
 			for(i=0 ; i<ga.Gmax ; i++){
-				fprintf(file,"%zu\t", i);
-				estadisticas(&P, i, file);
 				Crossover(&P,&Q, ga.Pc);
 				Mutacion(&Q, ga.Pm);
 				Evaluacion(&Q);
@@ -129,6 +135,8 @@ int main(int argc, char *argv[]){
 				peor_q = Peor_solucion(&Q); 				//Obtener indice de la peor solucion en Q
 				cpy_ind(&Q.ind[peor_q], &P.ind[mejor_p]);	//Reemplazando.
 				cpy_pop(&P, &Q);
+				fprintf(file,"%zu\t", i);
+				estadisticas(&P, i, file);
 			}
 			fclose(file);
 			printf("\n\t\t\t \033[1;42m Genetico con elitismo terminado \033[0m \n\n");
@@ -137,14 +145,14 @@ int main(int argc, char *argv[]){
 			file = fopen("miulambda.txt", "w");
 			printf("\n\t\t\t \033[1;42m Genetico Miu plus Lambda \033[0m \n\n");
 			for(i=0 ; i<ga.Gmax; i++){
-				fprintf(file,"%zu\t", i);
-				estadisticas(&P, i, file);
 				Crossover(&P,&Q, ga.Pc);
 				Mutacion(&Q, ga.Pm);
 				Evaluacion(&Q);
 				/*********************APLICANDO Miu + Lambda**************************/
 				Unir_poblaciones(&P,&Q,&T);
 				Seleccionar_mejores(&T,&P);
+				fprintf(file,"%zu\t", i);
+				estadisticas(&P, i, file);
 			}
 			fclose(file);
 			printf("\n\t\t\t \033[1;42m Genetico Miu plus Lambda terminado \033[0m \n\n");

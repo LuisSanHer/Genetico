@@ -113,14 +113,12 @@ void one_point_crossover(INDIVIDUO *P1, INDIVIDUO *P2, INDIVIDUO *H1, INDIVIDUO 
 		memcpy(H1->x, P1->x, sizeof(int)*mop.nbin); //Si no cayeron en la probabilidad de cruza
 		memcpy(H2->x, P2->x, sizeof(int)*mop.nbin); //entonces pasan exactamente como están.
 	}
-
-
 }
 
 void bit_wise_mutation(INDIVIDUO *Q, double Pm){
 	size_t i;
 	for(i=0 ; i<mop.nbin ; i++){ //Para toda la cadena binaria
-		if(randomperc() < Pm){ //Si random caé dentro del Paramatro de mutación
+		if(randomperc() < Pm){ //Si random caé dentro del Parametro de mutación
 			Q->x[i] = 1 - Q->x[i]; // MUTAR (Cambia de 0 a 1 y viceversa).
 		}
 	}
@@ -128,11 +126,35 @@ void bit_wise_mutation(INDIVIDUO *Q, double Pm){
 
 void Display_ind(INDIVIDUO ind){
 	size_t i;
-	printf("  \033[1;41mf: %.3lf\033[0m  x: ", ind.f);
+	// El *-1 solo es para mostrar en transformada
+	printf("  \033[1;41mf: %.3lf\033[0m  x: ", - ind.f);
 	for(i=0 ; i<mop.nbin ; i++){
 		printf("%d", ind.x[i]);
 	}
 	mop.nbin >= 121?printf("\n"):printf("\n\n");
+
+	int *aux = (int*)malloc(sizeof(int)*mop.nbin);
+  //Transformada rapida de Walsh Hadamard
+	int x,y,h=1;
+	memcpy(aux, ind.x,sizeof(int)*mop.nbin);
+  while(h < mop.nbin){
+    for (size_t i=0 ; i<mop.nbin ; i = (i+h*2)) {
+      for (size_t j=i ; j<i+h ; j++) {
+        x = aux[j];
+        y = aux[j+h];
+        aux[j] = x+y;
+        aux[j+h] = x-y;
+      }
+    }
+    h *= 2;
+  }
+	//Mostrar espectro de hadamard
+  printf("\t\t\t[");
+  for (size_t i=0 ; i<mop.nbin ; i++) {
+    printf("%d ", aux[i]);
+  }
+  printf("]\n");
+
 }
 
 int Mejor_solucion(POBLACION *P){
@@ -140,9 +162,9 @@ int Mejor_solucion(POBLACION *P){
 	INDIVIDUO mejor = P->ind[0];
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
-		if( mejor.f >= P->ind[i].f ){	// Evaluacion en términos de min
-			mejor = P->ind[i];          // o max. Cambiar condición
-			index = i;                  // dependiendo el caso
+		if( mejor.f >= P->ind[i].f ){	// Evaluacion en términos de
+			mejor = P->ind[i];          // minimización.
+			index = i;                  //
 		}
 	}
 	return index;
@@ -163,10 +185,11 @@ int Peor_solucion(POBLACION *P){
 
 void estadisticas(POBLACION *P, size_t i, FILE* file){
 	int mejor;
-	printf("\033[1;44mGeneración: %.2zu\033[0m", i);
+	printf("\033[1;44mGeneración: %.3zu\033[0m", i);
 	mejor = Mejor_solucion(P);
 	Display_ind(P->ind[mejor]);
-	fprintf(file,"%lf\n", P->ind[mejor].f);
+	// El *-1 solo es para mostrar en transformada
+	fprintf(file,"%lf\n", - P->ind[mejor].f);
 }
 
 void Unir_poblaciones(POBLACION *P, POBLACION *Q, POBLACION *T){
@@ -179,7 +202,6 @@ void Unir_poblaciones(POBLACION *P, POBLACION *Q, POBLACION *T){
 		}
 	}
 }
-
 
 void Seleccionar_mejores(POBLACION *T, POBLACION *P){
 	Ordenar(T);
@@ -194,9 +216,9 @@ void Ordenar(POBLACION *T){
 	INDIVIDUO aux;
 	for(i = 1; i < T->size; i++) {
 		for(j = 0; j < (T->size - i); j++){
-			if(T->ind[j].f > T->ind[j+1].f ){ 		// Ordenamiento en terminos
-			   aux = T->ind[j];										// de min o max. Cambiar condicion
-			   cpy_ind(&T->ind[j], &T->ind[j+1]);	// dependiendo el caso.
+			if(T->ind[j].f > T->ind[j+1].f ){ 		// Ordenamiento en términos
+			   aux = T->ind[j];										// de minimización.
+			   cpy_ind(&T->ind[j], &T->ind[j+1]);	//
 			   cpy_ind(&T->ind[j+1], &aux);
 		   }
 		}
