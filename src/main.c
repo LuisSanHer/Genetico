@@ -11,20 +11,45 @@
 
 /**************COMANDO GNUPLOT******************/
 /*
- * set title 'Genotipo de 32 bits'
+ * set title 'Genotipo con n=4'
  * set grid
  * set autoscale
- * plot '32bits.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'32bits.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", '32bits.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
+ * set xlabel 'Generaciones'
+ * set ylabel 'Valor de aptitud'
+ * set key bottom
+ * plot 'n4.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n4.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n4.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
  *
- * set title 'Genotipo de 64 bits'
+ * set title 'Genotipo con n=6'
  * set grid
  * set autoscale
- * plot '64bits.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'64bits.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", '64bits.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
- *
- * set title 'Genotipo de 128 bits'
+ * set xlabel 'Generaciones'
+ * set ylabel 'Valor de aptitud'
+ * set key bottom
+ * plot 'n6.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n6.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n6.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
+
+ * set title 'Genotipo con n=8'
  * set grid
  * set autoscale
- * plot '128bits.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'128bits.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", '128bits.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
+ * set xlabel 'Generaciones'
+ * set ylabel 'Valor de aptitud'
+ * set key bottom
+ * plot 'n8.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n8.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n8.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
+
+ * set title 'Genotipo con n=10'
+ * set grid
+ * set autoscale
+ * set xlabel 'Generaciones'
+ * set ylabel 'Valor de aptitud'
+ * set key bottom
+ * plot 'n10.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n10.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n10.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
+
+ * set title 'Genotipo con n=12'
+ * set grid
+ * set autoscale
+ * set xlabel 'Generaciones'
+ * set ylabel 'Valor de aptitud'
+ * set key bottom
+ * plot [0:200][1940:1990]'n12.txt' u 1:2 w lp lt 1 lw 2 t "Genetico Simple",'n12.txt' u 1:3 w lp lt 2 lw 3 t "Genetico elitismo", 'n12.txt' u 1:4 w lp lt 3 lw 2 t "Genetico Miu+Lambda"
 */
 
 MOP mop;
@@ -117,7 +142,7 @@ int main(int argc, char *argv[]){
 					Mutacion(&Q, ga.Pm);
 					Evaluacion(&Q);
 					cpy_pop(&P, &Q);
-					fprintf(file,"%zu\t", i);
+					//fprintf(file,"%zu\t", i);
 					estadisticas(&P, i, file);
 				}
 				fclose(file);
@@ -135,7 +160,7 @@ int main(int argc, char *argv[]){
 				peor_q = Peor_solucion(&Q); 				//Obtener indice de la peor solucion en Q
 				cpy_ind(&Q.ind[peor_q], &P.ind[mejor_p]);	//Reemplazando.
 				cpy_pop(&P, &Q);
-				fprintf(file,"%zu\t", i);
+				//fprintf(file,"%zu\t", i);
 				estadisticas(&P, i, file);
 			}
 			fclose(file);
@@ -151,7 +176,7 @@ int main(int argc, char *argv[]){
 				/*********************APLICANDO Miu + Lambda**************************/
 				Unir_poblaciones(&P,&Q,&T);
 				Seleccionar_mejores(&T,&P);
-				fprintf(file,"%zu\t", i);
+				//fprintf(file,"%zu\t", i);
 				estadisticas(&P, i, file);
 			}
 			fclose(file);

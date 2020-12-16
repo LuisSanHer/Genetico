@@ -10,6 +10,7 @@
 
 #include "mem_structs.h"
 
+void fwht_transform(const int *src, int *dst, int n);
 void funcion(INDIVIDUO *p);
 
 #endif /* TRANFORMADA_H */
