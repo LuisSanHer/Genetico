@@ -11,6 +11,7 @@
 #include <string.h>
 #include "rand.h"
 #include "genetico.h"
+#include "objetivo.h"
 
 void Inicializar(POBLACION *P){
 	size_t i,j;
@@ -48,7 +49,9 @@ void Evaluacion(POBLACION *Q){
 	size_t i;
 	int n = Q->size;
 	for(i=0 ; i<n ; i++){ //Para todos los individuos
-		funcion(&Q->ind[i]); //Calcular la transformada de hadamard
+		NoLinealidad(&Q->ind[i]); //Calcular la transformada de hadamard
+		SAC_0(&Q->ind[i]); 				//Calcular el criterio estricto de avalancha cero.
+		aptitud(&Q->ind[i]); 			//Calcular la aptitud en base a NL y SAC_0 (restricciones).
 	}
 }
 
@@ -127,66 +130,46 @@ void bit_wise_mutation(INDIVIDUO *Q, double Pm){
 void Display_ind(INDIVIDUO ind){
 	size_t i;
 	// El *-1 solo es para mostrar en transformada
-	printf("  \033[1;41mf: %.3lf\033[0m  x: ", - ind.f);
+	printf("  \033[1;41m NL: %.3lf\033[0m", - ind.NL);
+	printf("  \033[1;41m SAC: %.3lf\033[0m", ind.SAC);
+	printf("  \033[1;41m f: %.3lf\033[0m x: ", - ind.f);
 	for(i=0 ; i<mop.nbin ; i++){
 		printf("%d", ind.x[i]);
 	}
 	mop.nbin >= 121?printf("\n"):printf("\n\n");
-
-	/*
-	 **
-	 ***
-	//Transformada rapida de Walsh Hadamard
-	int *aux = (int*)malloc(sizeof(int)*mop.nbin);
-	int x,y,h=1;
-	memcpy(aux, ind.x,sizeof(int)*mop.nbin);
-  while(h < mop.nbin){
-    for (size_t i=0 ; i<mop.nbin ; i = (i+h*2)) {
-      for (size_t j=i ; j<i+h ; j++) {
-        x = aux[j];
-        y = aux[j+h];
-        aux[j] = x+y;
-        aux[j+h] = x-y;
-      }
-    }
-    h *= 2;
-  }
-	//Mostrar espectro de hadamard
-  printf("\t\t\t[");
-  for (size_t i=0 ; i<mop.nbin ; i++) {
-    printf("%d ", aux[i]);
-  }
-  printf("]\n");
-
-	***
-	**
-	*/
-
 }
 
 int Mejor_solucion(POBLACION *P){
 	size_t i, index;
-	INDIVIDUO mejor = P->ind[0];
+  INDIVIDUO *mejor = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
+  mejor->x=(int*)malloc(sizeof(int) * mop.nbin);
+  cpy_ind(mejor, &P->ind[0]);
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
-		if( mejor.f >= P->ind[i].f ){	// Evaluacion en términos de
-			mejor = P->ind[i];          // minimización.
+		if( mejor->f > P->ind[i].f ){	// Evaluacion en términos de
+			cpy_ind(mejor, &P->ind[i]);// minimización.
 			index = i;                  //
 		}
 	}
+  free(mejor->x);
+  free(mejor);
 	return index;
 }
 
 int Peor_solucion(POBLACION *P){
 	size_t i, index;
-	INDIVIDUO peor = P->ind[0];
+  INDIVIDUO *peor = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
+  peor->x=(int*)malloc(sizeof(int) * mop.nbin);
+  cpy_ind(peor, &P->ind[0]);
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
-		if( peor.f <= P->ind[i].f ){	// Evaluacion en términos de
-			peor = P->ind[i];         // minimización
-			index = i;                //
+		if( peor->f < P->ind[i].f ){	// Evaluacion en términos de
+			cpy_ind(peor, &P->ind[i]);  // minimización.
+			index = i;                  //
 		}
 	}
+  free(peor->x);
+  free(peor);
 	return index;
 }
 
@@ -220,14 +203,17 @@ void Seleccionar_mejores(POBLACION *T, POBLACION *P){
 
 void Ordenar(POBLACION *T){
 	size_t i,j;
-	INDIVIDUO aux;
+	INDIVIDUO *aux = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
+  aux->x=(int*)malloc(sizeof(int) * mop.nbin);
 	for(i = 1; i < T->size; i++) {
 		for(j = 0; j < (T->size - i); j++){
 			if(T->ind[j].f > T->ind[j+1].f ){ 		// Ordenamiento en términos
-			   aux = T->ind[j];										// de minimización.
+         cpy_ind(aux, &T->ind[j]);          // minimización.
 			   cpy_ind(&T->ind[j], &T->ind[j+1]);	//
-			   cpy_ind(&T->ind[j+1], &aux);
+			   cpy_ind(&T->ind[j+1], aux);
 		   }
 		}
 	}
+  free(aux->x);
+  free(aux);
 }

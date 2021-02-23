@@ -12,6 +12,8 @@
 typedef struct{
 	int *x;		//Cadena binaria (Genotipo)
 	double f;	//Valor función objetivo (Fenotipo)
+	double NL; //No linealidad
+	double SAC;//Criterio de avalancha estricto cero.
 }INDIVIDUO;
 
 typedef struct{

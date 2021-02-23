@@ -6,7 +6,7 @@
 #include <math.h>
 #include "rand.h"
 #include "genetico.h"
-#include "transformada.h"
+#include "objetivo.h"
 #include "mem_structs.h"
 
 /**************COMANDO GNUPLOT******************/
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]){
 	alloc_pop(&Q, ga.psize);
 	alloc_pop(&T, ga.psize*2);
 
-	randomize(1.0/semilla);
+	randomize(semilla/10);
 
 	Inicializar(&P);
 	Evaluacion(&P);
