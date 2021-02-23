@@ -128,7 +128,7 @@ int main(int argc, char *argv[]){
 	alloc_pop(&Q, ga.psize);
 	alloc_pop(&T, ga.psize*2);
 
-	randomize(semilla/10);
+	randomize(semilla/10.0);
 
 	Inicializar(&P);
 	Evaluacion(&P);
