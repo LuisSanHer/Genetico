@@ -78,13 +78,13 @@ int main(int argc, char *argv[]){
 
 
 	do {
-		printf("Ingrese exponente (4,6,8,10,12) para la longitud de la cadena binaria (genotipo): ");
+		printf("Ingrese exponente (3,5,8,10,12) para la longitud de la cadena binaria (genotipo): ");
 		scanf("%s", r);
 		longitud = atoi(r);
 		//printf("%d\n", longitud);
-		if (longitud!=4 && longitud!=6 && longitud!=8 && longitud!=10 && longitud!=12)
+		if (longitud!=3 && longitud!=5 && longitud!=8 && longitud!=10 && longitud!=12)
 			printf("\tOpción invalida\n");
-	} while(longitud!=4 && longitud!=6 && longitud!=8 && longitud!=10 && longitud!=12);
+	} while(longitud!=3 && longitud!=5 && longitud!=8 && longitud!=10 && longitud!=12);
 
 
 	do {

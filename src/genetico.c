@@ -49,7 +49,7 @@ void Evaluacion(POBLACION *Q){
 	size_t i;
 	int n = Q->size;
 	for(i=0 ; i<n ; i++){ //Para todos los individuos
-		NoLinealidad(&Q->ind[i]); //Calcular la transformada de hadamard
+		NoLinealidad(&Q->ind[i]); //Calcular la No linealidad.
 		SAC_0(&Q->ind[i]); 				//Calcular el criterio estricto de avalancha cero.
 		aptitud(&Q->ind[i]); 			//Calcular la aptitud en base a NL y SAC_0 (restricciones).
 	}
@@ -143,6 +143,7 @@ int Mejor_solucion(POBLACION *P){
 	size_t i, index;
   INDIVIDUO *mejor = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
   mejor->x=(int*)malloc(sizeof(int) * mop.nbin);
+	mejor->esp=(int*)malloc(sizeof(int) * mop.nbin);
   cpy_ind(mejor, &P->ind[0]);
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
@@ -151,6 +152,7 @@ int Mejor_solucion(POBLACION *P){
 			index = i;                  //
 		}
 	}
+	free(mejor->esp);
   free(mejor->x);
   free(mejor);
 	return index;
@@ -160,6 +162,7 @@ int Peor_solucion(POBLACION *P){
 	size_t i, index;
   INDIVIDUO *peor = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
   peor->x=(int*)malloc(sizeof(int) * mop.nbin);
+	peor->esp=(int*)malloc(sizeof(int) * mop.nbin);
   cpy_ind(peor, &P->ind[0]);
 	index = 0;
 	for(i=0 ; i<P->size ; i++){
@@ -168,6 +171,7 @@ int Peor_solucion(POBLACION *P){
 			index = i;                  //
 		}
 	}
+	free(peor->esp);
   free(peor->x);
   free(peor);
 	return index;
@@ -205,6 +209,7 @@ void Ordenar(POBLACION *T){
 	size_t i,j;
 	INDIVIDUO *aux = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
   aux->x=(int*)malloc(sizeof(int) * mop.nbin);
+	aux->esp=(int*)malloc(sizeof(int) * mop.nbin);
 	for(i = 1; i < T->size; i++) {
 		for(j = 0; j < (T->size - i); j++){
 			if(T->ind[j].f > T->ind[j+1].f ){ 		// Ordenamiento en términos
@@ -214,6 +219,7 @@ void Ordenar(POBLACION *T){
 		   }
 		}
 	}
+	free(aux->esp);
   free(aux->x);
   free(aux);
 }
