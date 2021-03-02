@@ -60,7 +60,8 @@ int main(int argc, char *argv[]){
 
 	POBLACION P,Q,T;
 	size_t i=0, mejor_p, peor_q;
-	int alg, longitud, poblacion, gmax, semilla;
+	int alg, longitud, poblacion, gmax;
+	float semilla;
 	char algoritmo[10], r[10], p[10], max[10], sem[10];
 	FILE* file;
 
@@ -107,13 +108,13 @@ int main(int argc, char *argv[]){
 	} while(gmax == 0);
 
 	do {
-		printf("\nIngrese el una semilla(1-10): ");
+		printf("\nIngrese el una semilla(0-10): ");
 		scanf("%s", sem);
-		semilla = atoi(sem);
+		semilla = atoi(sem) + 0.0;
 		//printf("%d\n", semilla);
-		if ( semilla<1 || semilla>10 )
+		if ( semilla<0 || semilla>10 )
 			printf("\tOpción invalida\n");
-	} while( semilla<1 || semilla>10 );
+	} while( semilla<0 || semilla>10 );
 
 	n = longitud;
 	mop.nbin = pow(2, n);
