@@ -130,7 +130,7 @@ void bit_wise_mutation(INDIVIDUO *Q, double Pm){
 void Display_ind(INDIVIDUO ind){
 	size_t i;
 	// El *-1 solo es para mostrar en transformada
-	printf("  \033[1;41m NL: %.3lf\033[0m", - ind.NL);
+	printf("  \033[1;41m NL: %.3lf\033[0m", ind.NL);
 	printf("  \033[1;41m SAC: %.3lf\033[0m", ind.SAC);
 	printf("  \033[1;41m f: %.3lf\033[0m x: ", - ind.f);
 	for(i=0 ; i<mop.nbin ; i++){

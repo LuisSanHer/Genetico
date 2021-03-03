@@ -64,7 +64,7 @@ void NoLinealidad(INDIVIDUO *p){
     }
   }
   //CLARK 2005: ECUACION 6
-  p->NL = -(pow(2, n-1) - mayor); //No linealidad completa sin dividir max R= 112
+  p->NL = (pow(2, n-1) - mayor); //No linealidad completa sin dividir max R= 112
                                //(CORRECTA) hasta cierto punto...
                                //Es la que se acerca a los resultados de Burnett.
 }
@@ -102,12 +102,12 @@ void SAC_0(INDIVIDUO *p){
     c = c<<1;
   }
   //p->SAC = max(0, iabs(Total));
-  p->SAC = iabs(Total);
+  p->SAC = Total;
   free(aux_2);
 }
 
 void aptitud(INDIVIDUO *p){
   double e = 0.0005;
-  double v = max(0, (p->SAC-e));
-  p->f = (p->NL)+pow(v,2);
+  double v = max(0, (iabs(p->SAC)-e));
+  p->f = (-p->NL)+pow(v,2);
 }
