@@ -117,7 +117,7 @@ int main(int argc, char *argv[]){
 	} while( semilla<0 || semilla>10 );
 
 	n = longitud;
-	mop.nbin = pow(2, n);
+	mop.nbin = pow(2.0, n);
 	mop.nobj = 1;
 
 	ga.psize = poblacion;

@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#include <math.h>
 #include <string.h>
 #include "rand.h"
 #include "genetico.h"
@@ -205,21 +206,15 @@ void Seleccionar_mejores(POBLACION *T, POBLACION *P){
 	}
 }
 
-void Ordenar(POBLACION *T){
-	size_t i,j;
-	INDIVIDUO *aux = (INDIVIDUO*)malloc(sizeof(INDIVIDUO));
-  aux->x=(int*)malloc(sizeof(int) * mop.nbin);
-	aux->esp=(int*)malloc(sizeof(int) * mop.nbin);
-	for(i = 1; i < T->size; i++) {
-		for(j = 0; j < (T->size - i); j++){
-			if(T->ind[j].f > T->ind[j+1].f ){ 		// Ordenamiento en términos
-         cpy_ind(aux, &T->ind[j]);          // minimización.
-			   cpy_ind(&T->ind[j], &T->ind[j+1]);	//
-			   cpy_ind(&T->ind[j+1], aux);
-		   }
-		}
-	}
-	free(aux->esp);
-  free(aux->x);
-  free(aux);
+int compare(const void *_a, const void *_b){
+	INDIVIDUO *a = (INDIVIDUO *) _a;
+	INDIVIDUO *b = (INDIVIDUO *) _b;
+	if(a->f < b->f)
+		return 0;
+	else
+		return 1;
+}
+
+void Ordenar(POBLACION *T) {
+	qsort(T->ind,T->size,sizeof(INDIVIDUO),&compare);
 }
