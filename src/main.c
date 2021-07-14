@@ -108,13 +108,13 @@ int main(int argc, char *argv[]){
 	} while(gmax == 0);
 
 	do {
-		printf("\nIngrese el una semilla(0-10): ");
+		printf("\nIngrese el una semilla(1-100): ");
 		scanf("%s", sem);
 		semilla = atoi(sem) + 0.0;
 		//printf("%d\n", semilla);
-		if ( semilla<0 || semilla>10 )
+		if ( semilla<1 || semilla>100 )
 			printf("\tOpción invalida\n");
-	} while( semilla<0 || semilla>10 );
+	} while( semilla<1 || semilla>100 );
 
 	n = longitud;
 	mop.nbin = pow(2.0, n);
@@ -127,9 +127,9 @@ int main(int argc, char *argv[]){
 
 	alloc_pop(&P, ga.psize);
 	alloc_pop(&Q, ga.psize);
-	alloc_pop(&T, ga.psize*2);
+	alloc_pop(&T, ga.psize*2.0);
 
-	randomize(semilla/10.0);
+	randomize(semilla/100.0);
 
 	Inicializar(&P);
 	Evaluacion(&P);
